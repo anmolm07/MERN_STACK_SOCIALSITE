@@ -12,7 +12,7 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
     }, [getProfiles]);
 
     const [filterprofile, setFilterProfile] = useState('');
-
+    const[textbox,setTextBox]=useState(false);
     return (
         <Fragment>
             {loading ? <Spinner /> : (<Fragment>
@@ -33,13 +33,26 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
                             />
                         </div>
                     </div>
+                    <div className="form-group">
+                        <p>
+                            <input
+                                type="checkbox"
+                                name="textbox"
+                                checked={textbox}
+                                value={textbox}
+                                onChange={() => setTextBox(!textbox)}
+                            />{' '}
+                            search by skills
+                        </p>
+                    </div>
                 </div>
                 <div className='profiles'>
-                    {profiles.length > 0 ? (
+                    {profiles.length > 0 ? (textbox ? profiles.map(profile =>
+                        profile.skills.toString().toUpperCase().includes(filterprofile.toUpperCase()) && (
+                            <Profileitem key={profile._id} profile={profile} />)): 
                         profiles.map(profile => profile.user.name.toUpperCase().includes(filterprofile.toUpperCase()) && (
                             <Profileitem key={profile._id} profile={profile} />
-                        ))
-                    ) : (
+                        ))) : (
                         <h4>No profiles found...</h4>
                     )}
                 </div>
